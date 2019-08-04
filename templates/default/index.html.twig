@@ -22,5 +22,17 @@
             <li>{{ user.name }} won {{ random_gift[loop.index0] }}</li>
         {% endfor %}
     </ul>
+
+    {% for message in app.flashes('notice') %}
+        <div class="flash-notice">
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    {{ render(controller(
+        'App\\Controller\\DefaultController::mostPopularPosts',
+        {'number': 2}
+    )) }}
+
 </div>
 {% endblock %}
