@@ -17,9 +17,7 @@ class DefaultController extends AbstractController
     {
 
     }
-    /**
-     * @Route("/", name="default")
-     */
+
     public function index(): Response
     {
         $users = ['A', 'B', 'C', 'D'];
@@ -42,6 +40,7 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @Route("/", name="default")
      * @Route("users", name="users_list")
      * @param GiftsService $gifts
      * @param Request $request
@@ -52,12 +51,17 @@ class DefaultController extends AbstractController
     {
         $users = $this->getDoctrine()->getRepository(User::class)->findAll();
 
-        $this->addFlash('notice', 'AHAHAHA');
+        //$this->addFlash('notice', 'AHAHAHA');
+
+        $filledGifts = array_merge(
+            $gifts->gifts,
+            array_fill(count($gifts->gifts) - 1, count($users) - count($gifts->gifts), 'nothing')
+        );
 
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'users' => $users,
-            'random_gift' => $gifts->gifts,
+            'random_gift' => $filledGifts,
         ]);
     }
 
@@ -140,6 +144,20 @@ class DefaultController extends AbstractController
 
         return $this->render('default/create_user.html.twig', [
             'user_id' => $user->getId(),
+        ]);
+    }
+
+    /**
+     * @Route("/show/{id}", name="show_user", requirements={"id": "\d+"})
+     * @param User $user
+     *
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function show(User $user): Response
+    {
+        return $this->render('default/show_user.html.twig', [
+            'user' => $user,
         ]);
     }
 }

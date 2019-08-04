@@ -19,6 +19,7 @@
 
     <ul>
         {% for user in users %}
+
             <li>{{ user.name }} won {{ random_gift[loop.index0] }}</li>
         {% endfor %}
     </ul>
