@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\User;
+use App\Entity\Video;
 use App\Services\GiftsService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -53,15 +55,15 @@ class DefaultController extends AbstractController
 
         //$this->addFlash('notice', 'AHAHAHA');
 
-        $filledGifts = array_merge(
-            $gifts->gifts,
-            array_fill(count($gifts->gifts) - 1, count($users) - count($gifts->gifts), 'nothing')
-        );
+//        $filledGifts = array_merge(
+//            $gifts->gifts,
+//            array_fill(count($gifts->gifts) - 1, count($users) - count($gifts->gifts), 'nothing')
+//        );
 
         return $this->render('default/index.html.twig', [
             'controller_name' => 'DefaultController',
             'users' => $users,
-            'random_gift' => $filledGifts,
+            'random_gift' => $gifts->gifts,
         ]);
     }
 
@@ -139,8 +141,21 @@ class DefaultController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $user = new User();
         $user->setName($name);
+//        $entityManager->persist($user);
+//        $entityManager->flush();
+
+        for ($i = 0; $i < 3; $i++) {
+            $video = new Video();
+            $video->setTitle('Video title - ' . $i);
+            $user->addVideo($video);
+            $entityManager->persist($video);
+        }
+
         $entityManager->persist($user);
         $entityManager->flush();
+
+//        dump('Video: ' . $video->getId());
+//        dump('User: ' . $user->getId());
 
         return $this->render('default/create_user.html.twig', [
             'user_id' => $user->getId(),
@@ -156,6 +171,23 @@ class DefaultController extends AbstractController
      */
     public function show(User $user): Response
     {
+//        $video = $this->getDoctrine()->getRepository(Video::class)->find(1);
+//
+//        dump($video->getUser());
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $userNew = new User();
+        $userNew->setName('John');
+        $address = new Address();
+        $address->setStreet('street');
+        $address->setNumber(28);
+        $userNew->setAddress($address);
+        $entityManager->persist($userNew);
+        $entityManager->flush();
+        dump($userNew->getAddress()->getStreet());
+
+
+
         return $this->render('default/show_user.html.twig', [
             'user' => $user,
         ]);

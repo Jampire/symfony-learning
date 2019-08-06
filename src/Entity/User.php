@@ -29,6 +29,11 @@ class User
      */
     private $videos;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Address", cascade={"persist", "remove"})
+     */
+    private $address;
+
     public function __construct()
     {
         $this->videos = new ArrayCollection();
@@ -89,6 +94,18 @@ class User
                 $video->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
