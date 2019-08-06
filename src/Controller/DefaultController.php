@@ -139,23 +139,25 @@ class DefaultController extends AbstractController
     public function saveUser(string $name): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
-        for ($i = 0; $i < 5; $i++) {
-            $user = new User();
-            $user->setName($name . ' - ' . $i);
-            $entityManager->persist($user);
+        $user = new User();
+        $user->setName($name);
+//        for ($i = 0; $i < 5; $i++) {
+//            $user = new User();
+//            $user->setName($name . ' - ' . $i);
+//            $entityManager->persist($user);
+//        }
+
+        //$entityManager->flush();
+
+        for ($i = 0; $i < 3; $i++) {
+            $video = new Video();
+            $video->setTitle('Video title - ' . $i);
+            $user->addVideo($video);
+            $entityManager->persist($video);
         }
 
+        $entityManager->persist($user);
         $entityManager->flush();
-
-//        for ($i = 0; $i < 3; $i++) {
-//            $video = new Video();
-//            $video->setTitle('Video title - ' . $i);
-//            $user->addVideo($video);
-//            $entityManager->persist($video);
-//        }
-//
-//        $entityManager->persist($user);
-//        $entityManager->flush();
 
         return $this->render('default/create_user.html.twig', [
             'user_id' => $user->getId(),
@@ -171,33 +173,10 @@ class DefaultController extends AbstractController
      */
     public function show(User $user): Response
     {
-//        $video = $this->getDoctrine()->getRepository(Video::class)->find(1);
-//
-//        dump($video->getUser());
+        //$user1 = $this->getDoctrine()->getRepository(User::class)->find(1);
+        $user1 = $this->getDoctrine()->getRepository(User::class)->findWithVideos(1);
+        dump($user1);
 
-        $entityManager = $this->getDoctrine()->getManager();
-//        $userNew = new User();
-//        $userNew->setName('John');
-//        $address = new Address();
-//        $address->setStreet('street');
-//        $address->setNumber(28);
-//        $userNew->setAddress($address);
-//        $entityManager->persist($userNew);
-//        $entityManager->flush();
-//        dump($userNew->getAddress()->getStreet());
-
-        $user1 = $entityManager->getRepository(User::class)->find(1);
-        $user2 = $entityManager->getRepository(User::class)->find(2);
-        $user3 = $entityManager->getRepository(User::class)->find(3);
-        $user4 = $entityManager->getRepository(User::class)->find(4);
-        $user5 = $entityManager->getRepository(User::class)->find(5);
-
-        $user1->addFollowed($user2);
-        $user1->addFollowed($user3);
-        $user1->addFollowed($user4);
-        $entityManager->flush();
-
-        dump($user1->getFollowed()->count());
 
         return $this->render('default/show_user.html.twig', [
             'user' => $user,
