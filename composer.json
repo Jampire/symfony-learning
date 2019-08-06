@@ -35,6 +35,7 @@
         "symfony/debug-pack": "*",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*",
+        "symfony/web-profiler-bundle": "4.3.*",
         "symfony/web-server-bundle": "4.3.*"
     },
     "config": {
