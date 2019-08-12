@@ -33,8 +33,3 @@ services:
     App\Controller\DefaultController:
         bind:
             $logger: '@monolog.logger'
-
-    App\Services\MyService:
-        arguments:
-            $param1: 'some param'
-            $adminEmail: '%admin_email%'
