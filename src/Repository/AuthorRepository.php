@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Author;
+use App\Entity\PdfFile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -17,6 +18,18 @@ class AuthorRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Author::class);
+    }
+
+    public function findByIdWithPdf(int $id): ?Author
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.id = :id')
+            ->setParameter('id', $id)
+            ->innerJoin('a.files', 'f')
+            ->andWhere('f INSTANCE OF ' . PdfFile::class)
+            ->addSelect('f')
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     // /**

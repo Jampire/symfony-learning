@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Address;
+use App\Entity\Author;
+use App\Entity\File;
+use App\Entity\PdfFile;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Services\GiftsService;
+use App\Services\MyService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -170,12 +174,13 @@ class DefaultController extends AbstractController
      *
      * @return Response
      * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     * @throws
      */
-    public function show(User $user): Response
+    public function show(User $user, MyService $service): Response
     {
-        //$user1 = $this->getDoctrine()->getRepository(User::class)->find(1);
-        $user1 = $this->getDoctrine()->getRepository(User::class)->findWithVideos(1);
-        dump($user1);
+        $entityManager = $this->getDoctrine()->getManager();
+        $items = $entityManager->getRepository(Author::class)->findByIdWithPdf(1);
+        dump($items);
 
 
         return $this->render('default/show_user.html.twig', [
