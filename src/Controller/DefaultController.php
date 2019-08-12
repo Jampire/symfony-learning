@@ -171,6 +171,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/show/{id}", name="show_user", requirements={"id": "\d+"})
      * @param User $user
+     * @param MyService $service
      *
      * @return Response
      * @author Dzianis Den Kotau <kotau@us.ibm.com>
@@ -178,9 +179,11 @@ class DefaultController extends AbstractController
      */
     public function show(User $user, MyService $service): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $items = $entityManager->getRepository(Author::class)->findByIdWithPdf(1);
-        dump($items);
+//        $entityManager = $this->getDoctrine()->getManager();
+//        $items = $entityManager->getRepository(Author::class)->findByIdWithPdf(1);
+//        dump($items);
+
+        $service->doAction();
 
 
         return $this->render('default/show_user.html.twig', [

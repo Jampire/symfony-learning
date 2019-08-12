@@ -4,8 +4,15 @@ namespace App\Services;
 
 class MyService
 {
-    public function __construct(MySecondService $secondService)
+    use OptionalService;
+
+    public function __construct()
     {
 
+    }
+
+    public function doAction()
+    {
+        dump($this->service->doSomething2());
     }
 }
