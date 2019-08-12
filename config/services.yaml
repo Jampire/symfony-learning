@@ -33,3 +33,8 @@ services:
     App\Controller\DefaultController:
         bind:
             $logger: '@monolog.logger'
+
+    App\Services\MyThirdService:
+        properties:
+            my: '@App\Services\MySecondService'
+            logger: '@monolog.logger'

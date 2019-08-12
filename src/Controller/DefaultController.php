@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Entity\Video;
 use App\Services\GiftsService;
 use App\Services\MyService;
+use App\Services\MyThirdService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -171,13 +172,13 @@ class DefaultController extends AbstractController
     /**
      * @Route("/show/{id}", name="show_user", requirements={"id": "\d+"})
      * @param User $user
-     * @param MyService $service
+     * @param MyThirdService $service
      *
      * @return Response
      * @author Dzianis Den Kotau <kotau@us.ibm.com>
      * @throws
      */
-    public function show(User $user, MyService $service): Response
+    public function show(User $user, MyThirdService $service): Response
     {
 //        $entityManager = $this->getDoctrine()->getManager();
 //        $items = $entityManager->getRepository(Author::class)->findByIdWithPdf(1);
