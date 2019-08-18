@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>{{ label }}</h1>
+    {% if posts is not empty %}
+        {% for post in posts %}
+            <p>{{ post }}</p>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

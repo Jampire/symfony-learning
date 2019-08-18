@@ -12,11 +12,13 @@ use App\Services\GiftsService;
 use App\Services\MyService;
 use App\Services\MyThirdService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class DefaultController extends AbstractController
 {
@@ -189,6 +191,32 @@ class DefaultController extends AbstractController
 
         return $this->render('default/show_user.html.twig', [
             'user' => $user,
+        ]);
+    }
+
+    /**
+     * @Route("/task", name="my_task")
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     * @throws \Psr\Cache\InvalidArgumentException
+     */
+    public function task(): Response
+    {
+        $cache = new FilesystemAdapter();
+        $posts = $cache->get('user_posts', static function (ItemInterface $item) {
+            $item->expiresAfter(15);
+            $computedValue = ['post 1', 'post 2', 'post 3'];
+            dump('connected with database ... ');
+            echo 'connected with database ... ';
+
+            return $computedValue;
+        });
+
+        dump($posts);
+
+        return $this->render('default/task.html.twig', [
+            'label' => 'Task',
+            'posts' => $posts,
         ]);
     }
 }
