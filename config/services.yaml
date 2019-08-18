@@ -38,3 +38,7 @@ services:
         properties:
             my: '@App\Services\MySecondService'
             logger: '@monolog.logger'
+
+    App\Listeners\VideoCreatedListener:
+      tags:
+        - {name: kernel.event_listener, event: video.created.event, method: onVideoCreatedEvent}

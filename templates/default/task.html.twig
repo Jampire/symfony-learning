@@ -2,7 +2,7 @@
 
 {% block body %}
     <h1>{{ label }}</h1>
-    {% if posts is not empty %}
+    {% if posts is defined and posts is not empty %}
         {% for post in posts %}
             <p>{{ post }}</p>
         {% endfor %}

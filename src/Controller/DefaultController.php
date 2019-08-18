@@ -8,6 +8,7 @@ use App\Entity\File;
 use App\Entity\PdfFile;
 use App\Entity\User;
 use App\Entity\Video;
+use App\Events\VideoCreatedEvent;
 use App\Services\GiftsService;
 use App\Services\MyService;
 use App\Services\MyThirdService;
@@ -18,13 +19,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class DefaultController extends AbstractController
 {
-    public function __construct($logger)
-    {
+    /** @var EventDispatcherInterface */
+    private $dispatcher;
 
+    public function __construct($logger, EventDispatcherInterface $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
     }
 
     public function index(): Response
@@ -207,7 +213,6 @@ class DefaultController extends AbstractController
             $item->expiresAfter(15);
             $computedValue = ['post 1', 'post 2', 'post 3'];
             dump('connected with database ... ');
-            echo 'connected with database ... ';
 
             return $computedValue;
         });
@@ -217,6 +222,25 @@ class DefaultController extends AbstractController
         return $this->render('default/task.html.twig', [
             'label' => 'Task',
             'posts' => $posts,
+        ]);
+    }
+
+    /**
+     * @Route("/video-created", name="video_created")
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function videoCreated(): Response
+    {
+        $video = new \stdClass();
+        $video->title = 'Funny movie';
+        $video->category = 'funny';
+
+        $event = new VideoCreatedEvent($video);
+        $this->dispatcher->dispatch($event, VideoCreatedEvent::NAME);
+
+        return $this->render('default/task.html.twig', [
+            'label' => 'Video Created Event',
         ]);
     }
 }
