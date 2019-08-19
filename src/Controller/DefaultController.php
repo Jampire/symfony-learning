@@ -9,6 +9,7 @@ use App\Entity\PdfFile;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Events\VideoCreatedEvent;
+use App\Form\VideoFormType;
 use App\Services\GiftsService;
 use App\Services\MyService;
 use App\Services\MyThirdService;
@@ -241,6 +242,34 @@ class DefaultController extends AbstractController
 
         return $this->render('default/task.html.twig', [
             'label' => 'Video Created Event',
+        ]);
+    }
+
+    /**
+     * @Route("video-form", name="video_form")
+     * @param Request $request
+     *
+     * @return Response
+     * @throws \Exception
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function videoForm(Request $request): Response
+    {
+        $video = new Video;
+//        $video->setTitle('Write a blog post');
+//        $video->setCreatedAt(new \DateTime('tomorrow'));
+
+        $form = $this->createForm(VideoFormType::class, $video);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->getData());
+
+            //return $this->redirectToRoute('home');
+        }
+
+        return $this->render('default/task.html.twig', [
+            'label' => 'Video Form',
+            'form' => $form->createView(),
         ]);
     }
 }

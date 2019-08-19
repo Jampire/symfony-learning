@@ -11,7 +11,12 @@ class Video
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
+     * @ORM\GeneratedValue()public function onKernelResponse1(ResponseEvent $event): void
+    {
+    //        $response = new Response('jampire');
+    //        $event->setResponse($response);
+    dump('onKernelResponse1');
+    }
      * @ORM\Column(type="integer")
      */
     private $id;
@@ -25,6 +30,11 @@ class Video
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="videos")
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
 
     public function getId(): ?int
     {
@@ -51,6 +61,18 @@ class Video
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }
