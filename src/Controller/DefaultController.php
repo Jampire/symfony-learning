@@ -255,19 +255,21 @@ class DefaultController extends AbstractController
      */
     public function videoForm(Request $request): Response
     {
+        $em = $this->getDoctrine()->getManager();
+        $videos = $em->getRepository(Video::class)->findAll();
+        dump($videos);
         $video = new Video;
-//        $video->setTitle('Write a blog post');
-//        $video->setCreatedAt(new \DateTime('tomorrow'));
-
         $form = $this->createForm(VideoFormType::class, $video);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($form->getData());
+            //dump($form->getData());
+            $em->persist($video);
+            $em->flush();
 
-            //return $this->redirectToRoute('home');
+            return $this->redirectToRoute('video_form');
         }
 
-        return $this->render('default/task.html.twig', [
+        return $this->render('default/video_form.html.twig', [
             'label' => 'Video Form',
             'form' => $form->createView(),
         ]);
