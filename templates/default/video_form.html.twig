@@ -12,6 +12,10 @@
             {{ form_label(form.created_at) }}
             {{ form_widget(form.created_at) }}
         {% endif %}
+        {{ form_label(form.file) }}
+        {{ form_widget(form.file) }}
+        {{ form_label(form.agreeTerms) }}
+        {{ form_widget(form.agreeTerms) }}
         {{ form_label(form.save) }}
         {{ form_widget(form.save) }}
         {{ form_end(form) }}
@@ -23,6 +27,7 @@
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Title</th>
+                    <th scope="col">File</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,6 +35,7 @@
                     <tr>
                         <th scope="row">{{ v.id }}</th>
                         <td>{{ v.title }}</td>
+                        <td>{{ v.file }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
