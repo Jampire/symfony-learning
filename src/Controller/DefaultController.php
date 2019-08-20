@@ -272,6 +272,7 @@ class DefaultController extends AbstractController
         return $this->render('default/video_form.html.twig', [
             'label' => 'Video Form',
             'form' => $form->createView(),
+            'videos' => $videos,
         ]);
     }
 }

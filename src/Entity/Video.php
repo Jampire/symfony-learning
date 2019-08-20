@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
@@ -11,18 +12,20 @@ class Video
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()public function onKernelResponse1(ResponseEvent $event): void
-    {
-    //        $response = new Response('jampire');
-    //        $event->setResponse($response);
-    dump('onKernelResponse1');
-    }
+     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 10,
+     *     minMessage = "Video title must be at least {{ limit }} characters long",
+     *     maxMessage = "Video title cannot be longer than {{ limit }} characters"
+     * )
      */
     private $title;
 
@@ -33,6 +36,8 @@ class Video
 
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\NotBlank()
+     * @Assert\Type("\DateTime")
      */
     private $created_at;
 

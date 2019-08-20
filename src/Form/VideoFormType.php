@@ -18,7 +18,7 @@ class VideoFormType extends AbstractType
             ->add('title', TextType::class, [
                 'label' => 'Set video title',
                 'data' => 'Example data',
-                'required' => true,
+                'required' => false,
             ])
             ->add('created_at', DateType::class, [
                 'label' => 'Set Date',
