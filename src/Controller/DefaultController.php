@@ -246,19 +246,22 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("video-form", name="video_form")
+     * @Route("/video-form/{id?}", name="video_form", requirements={"id": "\d+"})
      * @param Request $request
+     * @param int $id Video ID
      *
      * @return Response
      * @throws \Exception
      * @author Dzianis Den Kotau <kotau@us.ibm.com>
      */
-    public function videoForm(Request $request): Response
+    public function videoForm(Request $request, ?int $id): Response
     {
         $em = $this->getDoctrine()->getManager();
-        $videos = $em->getRepository(Video::class)->findAll();
+        $repository = $em->getRepository(Video::class);
+        $videos = $repository->findAll();
         dump($videos);
-        $video = new Video;
+
+        $video = $id === null ? new Video : $repository->find($id);
         $form = $this->createForm(VideoFormType::class, $video);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

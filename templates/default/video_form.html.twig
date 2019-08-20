@@ -4,13 +4,35 @@
     <h1>{{ label }}</h1>
 
     <div style="width: 400px;">
-        {{ form(form) }}
+        {# {{ form(form) }} #}
+        {{ form_start(form) }}
+        {{ form_label(form.title) }}
+        {{ form_widget(form.title) }}
+        {% if form.created_at is defined %}
+            {{ form_label(form.created_at) }}
+            {{ form_widget(form.created_at) }}
+        {% endif %}
+        {{ form_label(form.save) }}
+        {{ form_widget(form.save) }}
+        {{ form_end(form) }}
     </div>
 
     {% if videos is defined and videos is not empty %}
-        {% for v in videos %}
-            {{ v.id }}
-            {{ v.title }}
-        {% endfor %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in videos %}
+                    <tr>
+                        <th scope="row">{{ v.id }}</th>
+                        <td>{{ v.title }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {%  endif %}
 {% endblock %}
