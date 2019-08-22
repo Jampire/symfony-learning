@@ -51,6 +51,11 @@ class Video
      */
     private $file;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\SecurityUser", inversedBy="videos")
+     */
+    private $securityUser;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -100,6 +105,18 @@ class Video
     public function setFile(string $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    public function getSecurityUser(): ?SecurityUser
+    {
+        return $this->securityUser;
+    }
+
+    public function setSecurityUser(?SecurityUser $securityUser): self
+    {
+        $this->securityUser = $securityUser;
 
         return $this;
     }
