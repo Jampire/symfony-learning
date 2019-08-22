@@ -60,6 +60,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/", name="default")
+     * @Route("/", name="home")
      * @Route("users", name="users_list")
      * @param GiftsService $gifts
      * @param Request $request
