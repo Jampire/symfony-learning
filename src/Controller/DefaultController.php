@@ -6,9 +6,11 @@ use App\Entity\Address;
 use App\Entity\Author;
 use App\Entity\File;
 use App\Entity\PdfFile;
+use App\Entity\SecurityUser;
 use App\Entity\User;
 use App\Entity\Video;
 use App\Events\VideoCreatedEvent;
+use App\Form\RegisterUserType;
 use App\Form\VideoFormType;
 use App\Services\GiftsService;
 use App\Services\MyService;
@@ -20,6 +22,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -280,6 +283,41 @@ class DefaultController extends AbstractController
             'label' => 'Video Form',
             'form' => $form->createView(),
             'videos' => $videos,
+        ]);
+    }
+
+    /**
+     * @Route("/user/new", name="user_registration")
+     * @param Request                      $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     *
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(SecurityUser::class)->findAll();
+        dump($users);
+
+        $user = new SecurityUser();
+        $form = $this->createForm(RegisterUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setEmail($form->get('email')->getData());
+            $user->setPassword(
+                $passwordEncoder->encodePassword($user, $form->get('password')->getData())
+            );
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('user_registration');
+        }
+
+        return $this->render('default/register.html.twig', [
+            'label' => 'User Registration',
+            'form' => $form->createView(),
         ]);
     }
 }
