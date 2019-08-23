@@ -15,6 +15,7 @@ use App\Form\VideoFormType;
 use App\Services\GiftsService;
 use App\Services\MyService;
 use App\Services\MyThirdService;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -319,6 +320,28 @@ class DefaultController extends AbstractController
         return $this->render('default/register.html.twig', [
             'label' => 'User Registration',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/home89/{id}", name="home89", requirements={"id": "\d+"})
+     * @Security("user.getId() == video.getSecurityUser().getId()")
+     * @param Request $request
+     * @param Video $video
+     *
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function index89(Request $request, Video $video): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(SecurityUser::class)->findAll();
+        dump($users);
+        dump($video);
+
+        return $this->render('default/home89.html.twig', [
+            'controller_name' => 'DefaultController',
+            'users' => $users,
         ]);
     }
 }

@@ -17,6 +17,8 @@
         <li>Your template at <code><a href="{{ 'D:/www/symfony/4/learning/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
     </ul>
 
+    {% include 'menu.html.twig' %}
+
     <ul>
         {% for user in users %}
 
@@ -35,12 +37,6 @@
         'App\\Controller\\DefaultController::mostPopularPosts',
         {'number': 2}
     )) }}
-
-    {% if app.user %}
-        <div><a href="{{ path('app_logout') }}">Logout</a></div>
-    {% else %}
-        <div><a href="{{ path('app_login') }}">Login</a></div>
-    {% endif %}
 
 </div>
 {% endblock %}

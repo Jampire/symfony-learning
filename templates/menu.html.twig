@@ -1,0 +1,5 @@
+{% if app.user %}
+    <div><a href="{{ path('app_logout') }}">Logout</a></div>
+{% else %}
+    <div><a href="{{ path('app_login') }}">Login</a></div>
+{% endif %}
