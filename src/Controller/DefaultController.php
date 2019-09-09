@@ -344,4 +344,23 @@ class DefaultController extends AbstractController
             'users' => $users,
         ]);
     }
+
+    /**
+     * @Route("/home93/{id}", name="home93", requirements={"id": "\d+"})
+     * @param Request $request
+     * @param Video $video
+     *
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function index93(Request $request, Video $video): Response
+    {
+        $this->denyAccessUnlessGranted(Video::VIDEO_VIEW_ATTR, $video);
+        dump($video);
+
+        return $this->render('default/home89.html.twig', [
+            'controller_name' => 'DefaultController',
+            'users' => [],
+        ]);
+    }
 }

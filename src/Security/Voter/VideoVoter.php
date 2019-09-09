@@ -11,7 +11,7 @@ class VideoVoter extends Voter
 {
     protected function supports($attribute, $subject)
     {
-        return in_array($attribute, ['VIDEO_DELETE', 'VIDEO_VIEW'])
+        return in_array($attribute, [Video::VIDEO_DELETE_ATTR, Video::VIDEO_VIEW_ATTR], true)
             && $subject instanceof Video;
     }
 
@@ -27,12 +27,9 @@ class VideoVoter extends Voter
         $video = $subject;
 
         switch ($attribute) {
-            case 'VIDEO_DELETE':
+            case Video::VIDEO_VIEW_ATTR:
+            case Video::VIDEO_DELETE_ATTR:
                 return $user === $video->getSecurityUser();
-            case 'VIDEO_VIEW':
-                // logic to determine if the user can VIEW
-                // return true or false
-                break;
         }
 
         return false;

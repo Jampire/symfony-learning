@@ -10,6 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Video
 {
+    public const VIDEO_DELETE_ATTR = 'VIDEO_DELETE';
+    public const VIDEO_VIEW_ATTR = 'VIDEO_VIEW';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
