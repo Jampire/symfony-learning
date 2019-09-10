@@ -62,7 +62,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="default")
      * @Route("/", name="home")
-     * @Route("users", name="users_list")
+     * @Route("/users", name="users_list")
      * @param GiftsService $gifts
      * @param Request $request
      * @return Response
@@ -362,5 +362,15 @@ class DefaultController extends AbstractController
             'controller_name' => 'DefaultController',
             'users' => [],
         ]);
+    }
+
+    /**
+     * @Route("/test", name="my_test")
+     * @return Response
+     * @author Dzianis Den Kotau <kotau@us.ibm.com>
+     */
+    public function test(): Response
+    {
+        return $this->render('default/test.html.twig');
     }
 }
